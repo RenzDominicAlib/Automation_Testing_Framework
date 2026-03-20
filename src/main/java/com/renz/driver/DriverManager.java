@@ -1,6 +1,5 @@
-package driver;
+package com.renz.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -27,8 +26,6 @@ public class DriverManager {
 
         if (browserName.contains("chrome")) {
             ChromeOptions options = getChromeOptions();
-            WebDriverManager.chromedriver().clearDriverCache().setup();
-            WebDriverManager.chromedriver().setup();
             if(browserName.contains("headless")) {
                 options.addArguments("--headless");
             }
