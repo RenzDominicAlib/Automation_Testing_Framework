@@ -18,9 +18,10 @@
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 
         <cucumber.java.version>7.33.0</cucumber.java.version>
+        <webdrivermanager.version>6.3.3</webdrivermanager.version>
         <gherkin.version>37.0.0</gherkin.version>
         <cucumber-reporting.version>5.8.4</cucumber-reporting.version>
-        <selenium.version>4.39.0</selenium.version>
+        <selenium.version>4.40.0</selenium.version>
         <testng.version>7.11.0</testng.version>
         <aspectjweaver.version>1.9.25</aspectjweaver.version>
         <allure-testng.version>2.31.0</allure-testng.version>
@@ -69,6 +70,14 @@
             <artifactId>json-schema-validator</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
