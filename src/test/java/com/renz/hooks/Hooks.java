@@ -1,6 +1,7 @@
 package com.renz.hooks;
 
 import com.renz.driver.DriverManager;
+import com.renz.utils.DBUtils;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
@@ -72,8 +73,8 @@ public class Hooks {
     public void tearDown(Scenario scenario) {
         // Always close the browser to free up memory
         DriverManager.quitDriver();
-
         scenarioThread.remove(); // Clean up thread memory
+        DBUtils.closeConnection();
     }
 
     @AfterAll

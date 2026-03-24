@@ -5,26 +5,27 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertyReader {
-    private static Properties prop;
+    private static Properties prop = new Properties();
 
     static {
         try {
-            prop = new Properties();
-            FileInputStream fis = new FileInputStream("src/test/resources/config/config.properties");
+            // 1. Determine environment from Command Line (-Denv=qa). Default is 'dev'.
+            String env = System.getProperty("env") != null ? System.getProperty("env") : "qa";
+            String path = "src/test/resources/config/" + env + ".properties";
+
+            FileInputStream fis = new FileInputStream(path);
             prop.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Could not load config.properties file!");
+        } catch (Exception e) {
+            throw new RuntimeException("Could not load environment properties!");
         }
     }
 
     public static String getProp(String key) {
-        // 1. Check Command Line (-Dbrowser=edge)
+        // 2. PRIORITY: Command Line (-Ddb.username=new_user) > Property File
         String value = System.getProperty(key);
-        // 2. If null, check config.properties. If still null, return empty string.
         if (value == null) {
             value = prop.getProperty(key);
         }
-        return (value != null) ? value : "";
+        return value != null ? value : "";
     }
 }
