@@ -1,7 +1,6 @@
 Feature: Login and End to End test of Swag Lab
 # To execute parallel
 # mvn test -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
-#  mvn test -Dbrowser=edgeheadless -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
 #  masterthought reporting
 #  target/masterthought-report/cucumber-html-reports/report-feature_3623688244.html
   @renztest

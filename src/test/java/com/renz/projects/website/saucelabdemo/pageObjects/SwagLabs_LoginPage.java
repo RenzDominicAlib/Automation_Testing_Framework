@@ -1,5 +1,6 @@
 package com.renz.projects.website.saucelabdemo.pageObjects;
 
+import com.renz.driver.DriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,9 +11,9 @@ public class SwagLabs_LoginPage {
 
     WebDriver driver;
 
-    public SwagLabs_LoginPage(WebDriver driver){
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+    public SwagLabs_LoginPage(){
+        this.driver = DriverManager.getDriver();
+        PageFactory.initElements(this.driver, this);
     }
 
     @FindBy(id ="user-name")

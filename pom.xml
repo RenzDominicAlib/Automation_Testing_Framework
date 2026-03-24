@@ -52,8 +52,8 @@
         <mysql-connector-j.version>9.5.0</mysql-connector-j.version>
 
         <!-- Suite XML path -->
-        <suite.feature>src/test/resources/suites/SuiteFeatureByTag.xml</suite.feature>
-        <suite.feature.login.cms>src/test/resources/suites/SuiteFeatureLoginCMS.xml</suite.feature.login.cms>
+<!--        <suite.feature>src/test/resources/suites/SuiteFeatureByTag.xml</suite.feature>-->
+<!--        <suite.feature.login.cms>src/test/resources/suites/SuiteFeatureLoginCMS.xml</suite.feature.login.cms>-->
     </properties>
 
     <dependencies>
@@ -119,6 +119,12 @@
 <!--            <artifactId>java-telegram-bot-api</artifactId>-->
 <!--            <version>${telegram.bot.version}</version>-->
 <!--        </dependency>-->
+        <!-- Needed to generate the raw JSON data for the report -->
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version>5.7.7</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
         <dependency>
@@ -329,27 +335,6 @@
     </dependencies>
 
     <!-- This profile execute the TestNG suite inside the suites folder on test/resources/suites -->
-    <profiles>
-
-        <profile>
-            <id>feature-gherkin</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
-                        <configuration>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>${suite.feature.login.cms}</suiteXmlFile>
-                            </suiteXmlFiles>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-    </profiles>
 
     <build>
 
@@ -368,24 +353,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
+                <version>3.2.5</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <!-- Call Suite name global set up above -->
-                        <suiteXmlFile>${suite.feature.login.cms}</suiteXmlFile>
-                    </suiteXmlFiles>
-
-                    <rerunFailingTestsCount>1</rerunFailingTestsCount>
-                    <argLine>
-                        -Dfile.encoding=UTF-8
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectjweaver.version}/aspectjweaver-${aspectjweaver.version}.jar"
-                    </argLine>
-                    <reportsDirectory>target/test-output</reportsDirectory>
+                    <properties>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>4</value> <!-- Default thread count -->
+                        </property>
+                    </properties>
+                    <includes>
+                        <include>**/TestRunner.java</include>
+                    </includes>
+                    <!-- Ensures reports are generated even if some tests fail -->
                     <testFailureIgnore>true</testFailureIgnore>
-                    <systemPropertyVariables>
-                        <allure.results.directory>target/allure-results</allure.results.directory>
-                    </systemPropertyVariables>
-
                 </configuration>
             </plugin>
 
@@ -402,26 +382,27 @@
             </plugin>
 
             <plugin>
-                <!--https://mvnrepository.com/artifact/net.masterthought/maven-cucumber-reporting-->
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
-                <version>5.8.5</version>
+                <version>5.7.7</version>
                 <executions>
                     <execution>
-                        <id>generate-cucumber-report</id>
+                        <id>execution</id>
                         <phase>test</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <projectName>AutomationFrameworkCucumberTestNG</projectName>
-                            <skip>false</skip>
-                            <outputDirectory>exports/reports/CucumberReports/cucumber-reports
-                            </outputDirectory>
-                            <inputDirectory>target/cucumber-reports</inputDirectory>
+                            <projectName>ExecutionReport</projectName>
+                            <outputDirectory>${project.build.directory}/masterthought-report</outputDirectory>
+                            <inputDirectory>${project.build.directory}/cucumber-reports</inputDirectory>
                             <jsonFiles>
                                 <param>**/*.json</param>
                             </jsonFiles>
+                            <!-- This ensures images are properly handled -->
+                            <mergeFeaturesById>false</mergeFeaturesById>
+                            <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>
+                            <checkBuildResult>false</checkBuildResult>
                         </configuration>
                     </execution>
                 </executions>
