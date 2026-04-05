@@ -1,7 +1,6 @@
-package com.renz.projects.website.saucelabdemo.pageObjects;
+package com.renz.projects.website.saucelabdemo.pageobjects;
 
 import com.renz.driver.DriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

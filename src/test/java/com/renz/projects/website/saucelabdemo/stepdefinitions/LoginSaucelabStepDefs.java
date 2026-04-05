@@ -1,6 +1,6 @@
 package com.renz.projects.website.saucelabdemo.stepdefinitions;
 
-import com.renz.projects.website.saucelabdemo.pageObjects.SwagLabs_LoginPage;
+import com.renz.projects.website.saucelabdemo.pageobjects.SwagLabs_LoginPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

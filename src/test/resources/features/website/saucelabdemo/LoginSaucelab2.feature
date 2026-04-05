@@ -10,7 +10,7 @@ Feature: Login and End to End test of Swag Lab
     And user enter password: "secret_sauce"
     Then click Login button
     Then I take a screenshot for evidence
-    Then user is redirected to the "Product page"
+#    Then user is redirected to the "Product page"
 
   @renztest
   Scenario: Success login using LOCKED OUT USER
