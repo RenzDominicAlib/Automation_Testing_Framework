@@ -1,0 +1,60 @@
+name: Java Custom Code Checker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check-style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Custom Style Checks
+        run: |
+          echo "Starting Comprehensive Java checks..."
+          ERROR_FOUND=false
+          
+          # --- 1. Package Naming: Must be all lowercase ---
+          # Searches for 'package' followed by any Uppercase letters or Underscores
+          if grep -rnE "^package\s+.*[A-Z_].*;" --include="*.java" .; then
+            echo "::error::Package naming violation: Package names must be all lowercase (e.g., com.myapp.utils)."
+            grep -rnE "^package\s+.*[A-Z_].*;" --include="*.java" .
+            ERROR_FOUND=true
+          fi
+          
+          # --- 2. File/Class Naming: Must start with Uppercase ---
+          if find . -name "[a-z]*.java" | grep -q .; then
+            echo "::error::Class naming violation: Java files must start with an Uppercase letter."
+            find . -name "[a-z]*.java"
+            ERROR_FOUND=true
+          fi
+          
+          # --- 3. Constants: static final must be UPPER_CASE ---
+          if grep -rnE "static\s+final\s+\w+\s+[a-z][a-zA-Z0-9]*" --include="*.java" .; then
+            echo "::error::Constant naming violation: 'static final' must be UPPER_CASE."
+            ERROR_FOUND=true
+          fi
+          
+          # --- 4. Style: Check for tabs (Standard: Use 4 spaces) ---
+          if grep -rn $'\t' --include="*.java" .; then
+            echo "::error::Style violation: Tabs found. Use 4 spaces instead."
+            ERROR_FOUND=true
+          fi
+          
+          # --- 5. Empty Catch Blocks: Bad practice ---
+          if grep -rnE "catch\s*\(.*\)\s*\{\s*\}" --include="*.java" .; then
+             echo "::warning::Found empty catch block. Please handle exceptions properly."
+          fi
+          
+          # Final decision
+          if [ "$ERROR_FOUND" = true ]; then
+            echo "Workflow failed due to naming or style violations."
+            exit 1
+          else
+            echo "All checks passed! Your code is clean and follows standards."
+            exit 0
+          fi
