@@ -1,0 +1,56 @@
+name: Selenium Test Automation CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests (qa, staging, prod)'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - qa
+          - staging
+          - prod
+      tags:
+        description: 'Cucumber tags (e.g., @renztest, @smoke)'
+        required: true
+        default: '@renztest'
+      threads:
+        description: 'Number of parallel threads'
+        required: false
+        default: '6'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Selenium Cucumber Tests
+        run: |
+          mvn test \
+          -Denv=${{ github.event.inputs.environment }} \
+          -Dheadless=true \
+          -D"cucumber.filter.tags=${{ github.event.inputs.tags }}" \
+          -Ddataproviderthreadcount=${{ github.event.inputs.threads }}
+
+      - name: Upload Test Reports
+        if: always() # Runs even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports
+          path: target/cucumber-reports/ # Change this to your actual report path

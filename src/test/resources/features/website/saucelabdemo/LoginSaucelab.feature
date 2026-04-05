@@ -5,6 +5,9 @@ Feature: Login and End to End test of Swag Lab
 #  mvn test -Denv=dev -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
 #  masterthought reporting
 #  target/masterthought-report/cucumber-html-reports/report-feature_3623688244.html
+# for pipeline
+#  mvn test -Denv=qa -Dheadless=true -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
+
 #
   @renztest
   Scenario: Success login using STANDARD USER
