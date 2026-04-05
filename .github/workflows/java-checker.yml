@@ -58,3 +58,10 @@ jobs:
             echo "All checks passed! Your code is clean and follows standards."
             exit 0
           fi
+          
+          # --- 6. TODO/FIXME Check: No unfinished tasks allowed ---
+          # Searches for 'TODO' or 'FIXME' in any case (case-insensitive)
+               if grep -rinE "TODO|FIXME" --include="*.{java,feature,properties}" .; then
+            echo "::error::Unfinished tasks (TODO/FIXME) found in code or config."
+            ERROR_FOUND=true
+          fi
