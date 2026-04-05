@@ -8,18 +8,18 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to run tests (qa, staging, prod)'
+        description: 'Environment to run tests (qa, staging, dev)'
         required: true
         default: 'qa'
         type: choice
         options:
           - qa
           - staging
-          - prod
+          - dev
       tags:
         description: 'Cucumber tags (e.g., @renztest, @smoke)'
         required: true
-        default: '@renztest'
+        default: '@smoke'
       threads:
         description: 'Number of parallel threads'
         required: false
@@ -43,10 +43,10 @@ jobs:
       - name: Run Selenium Cucumber Tests
         run: |
           mvn test \
-          -Denv=${{ github.event.inputs.environment }} \
+          -Denv=${{ github.event.inputs.environment || 'qa' }} \
           -Dheadless=true \
-          -D"cucumber.filter.tags=${{ github.event.inputs.tags }}" \
-          -Ddataproviderthreadcount=${{ github.event.inputs.threads }}
+          -D"cucumber.filter.tags=${{ github.event.inputs.tags || '@smoke' }}" \
+          -Ddataproviderthreadcount=${{ github.event.inputs.threads || '6' }}
 
       - name: Upload Test Reports
         if: always() # Runs even if tests fail

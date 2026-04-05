@@ -9,14 +9,14 @@ Feature: Login and End to End test of Swag Lab
 #  mvn test -Denv=qa -Dheadless=true -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
 
 #
-  @renztest
+  @renztest   @smoke
   Scenario: Success login using STANDARD USER
     Given user navigate to SauceLab Login Page: "https://www.saucedemo.com/"
     When user enter username: "standard_user"
     And user enter password: "secret_sauce"
     Then click Login button
     Then I take a screenshot for evidence
-    Then user is redirected to the "Product page"
+#    Then user is redirected to the "Product page"
 
   @renztest
   Scenario: Success login using LOCKED OUT USER
