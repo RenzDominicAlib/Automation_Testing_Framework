@@ -4,7 +4,7 @@ import com.renz.driver.DriverManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-
+//TODO
 public class BasePage {
     WebDriver driver;
 
