@@ -1,5 +1,5 @@
 Feature: Login and End to End test of Swag Lab
-#TODO
+TODO
 # To execute parallel
 # mvn test -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
 #  mvn test -Dbrowser=edgeheadless -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6

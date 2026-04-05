@@ -1,5 +1,5 @@
 Feature: Login and End to End test of Swag Lab
-#  FIXME
+FIXME
 # To execute parallel
 # mvn test -D"cucumber.filter.tags=@renztest" -Ddataproviderthreadcount=6
 #  masterthought reporting
